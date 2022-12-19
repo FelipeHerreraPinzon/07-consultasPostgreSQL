@@ -155,7 +155,7 @@ CONSULTAR LOS DATOS DE LOS PROPIETARIOS QUE TAMBIEN HAYAN SIDO ALCALDES.
                           antiguo.cantchoques as choques, clasico.placaveh as clasico,
                           clasico.valor as valor
                  FROM vehiculo LEFT JOIN antiguo ON vehiculo.placa = antiguo.placaveh
-                               LEFT JOIN clasico ON clasico.placaveh = vehiculo.placa";
+                               LEFT JOIN clasico ON clasico.placaveh = vehiculo.placa  ";
     $resultado = $conexion->prepare($consulta);
     $resultado->execute();
     $datos = $resultado->fetchAll(PDO::FETCH_OBJ);
@@ -183,3 +183,44 @@ CONSULTAR LOS DATOS DE LOS PROPIETARIOS QUE TAMBIEN HAYAN SIDO ALCALDES.
 <br>
 <br>
 <br>
+<p>
+ CONSULTAR PLACA Y MARCA DE LOS VEHICULOS RENAULT O CHEVROLET, QUE HAYAN DESFILADO
+ EN VERSIONES DONDE EL ALCALDE ERA FICO GUTIERREZ O ALONSO SALAZAR, Y QUE TENGA
+ PROPIETARIOS MAYORES DE 30 A�OS.
+</p>
+<h3>En este punto tuve problemas por el caracter especial Ñ</h3>
+<img src="caracter_especial.png" alt="">
+
+<table border="1">
+      
+        <th>año version</th>
+        <th>alcalde</th>
+       
+          
+    <tbody>
+    <?php
+    $conexion = Database::conectar();
+    $consulta = "SELECT version_desfile.cedalcalde as cedula, version_desfile.a�o as año, alcalde.nombre as alcalde 
+                 FROM version_desfile
+                 INNER JOIN alcalde ON alcalde.cedula = version_desfile.cedalcalde
+                 WHERE alcalde.nombre = 'FICO GUTIERREZ' OR alcalde.nombre = 'ALONSO SALAZAR' ";
+    $resultado = $conexion->prepare($consulta);
+    $resultado->execute();
+    $datos = $resultado->fetchAll(PDO::FETCH_OBJ);
+?>
+
+
+  <?php  foreach($datos as $dato): ?>
+
+
+    <tr>
+
+      
+        <td> <?php echo $dato->año ?></td> 
+        <td> <?php echo $dato->alcalde ?></td> 
+    </tr>        
+
+        <?php   endforeach; ?>
+
+    </tbody>
+</table>
